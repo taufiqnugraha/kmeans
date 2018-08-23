@@ -12,8 +12,8 @@ from pylab import rcParams
 from pandas import Series, DataFrame
 from scipy.spatial.distance import cdist
 
-def kmeas():
-    data = requests.get('http://localhost:8000/api/tingkatbutuhguru').json() 
+def kmeans():
+    data = requests.get('http://192.168.10.32:8080/api/tingkatbutuhguru').json() 
     sekolah = []
     siswa = []
     guru = []

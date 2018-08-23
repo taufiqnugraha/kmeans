@@ -12,11 +12,11 @@ from sklearn.cross_validation import train_test_split
 from sklearn import preprocessing
 from sklearn.cluster import KMeans
 import requests
-import json 
+import json
 from pylab import rcParams
 from pandas import Series, DataFrame
 from scipy.spatial.distance import cdist
-from train_kmeans import kmeas
+from train_kmeans import kmeans
 
 db = pymysql.connect('localhost','root', '', 'skripsi_pendidikan')
 cursor = db.cursor()
@@ -27,8 +27,8 @@ CORS(app)
 @app.route('/')
 def index():
     return jsonify({"status": "success"})
-@app.route('/api/getangkaharapan/', methods=['GET'])
 
+@app.route('/api/getangkaharapan/', methods=['GET'])
 def getipm():
     try:
         cursor.execute("SELECT kabupaten, MYS, IPM, tahun FROM pembangunan where tahun=2017")
@@ -44,13 +44,10 @@ def getipm():
 @app.route('/api/klustersummary/', methods=['GET'])
 def getKluster():
     try:
-        results = kmeas()
-        return jsonify(results)
+        results = kmeans()
+        return jsonify({'status_code': 200, 'result':json.loads(results.to_json(orient='records'))})
         # return jsonify({'kabupaten':result['kabupaten'].values,'cluster':result['cluster'].values})
     except Exception as e:
         return jsonify({'response': 404, 'error': e})
 
-
-    
 if __name__ == '__main__' : app.run(host="localhost", port=5000, debug=True)
-
